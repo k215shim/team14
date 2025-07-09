@@ -1,0 +1,31 @@
+Itemクラス
+主担当者:山口哲平
+属性（変数）一覧：
+float x,y//アイテムの位置（座標）
+float w,h //幅と高さ（当たり判定・表示用）
+float vx,vy//移動速度（動くアイテムの場合は必要なので）
+PIage img //アイテムの画像
+boolean active//有効状態(falseなら取得済み・非表示)
+String type//アイテムの種類
+
+メソッド一覧：
+update()//アイテムの位置やアニメーションを更新
+display() //アイテムを画面に描写
+collect()//アイテムが取得された時の処理
+isColliding(Character other)//他キャラとの当たり判定
+applyEffect(Mainchara mainchara)//プレイヤーに効果を与える
+
+__________________________________\\
+
+主担当者:山口哲平
+
+Redmushクラス（Itemクラスを継承する）
+Poisonmushクラス(Itemクラスを継承する)
+Coinクラス(Itemクラスを継承する)
+Fireクラス（Itemクラスを継承する）
+
+
+
+
+
+
