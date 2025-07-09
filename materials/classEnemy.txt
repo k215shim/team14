@@ -1,0 +1,31 @@
+Enemyクラス（Characterクラスを継承する）
+主担当者:山口哲平
+属性（変数）一覧：
+float x,y//位置
+float vx,vy//移動速度
+float w,h//幅、高さ
+PImage img//敵のキャラクター画像
+boolean alive//生死判定
+boolean onGround//地面の接地判定
+int direction//向き(-1:左,1:右)
+
+メソッド一覧:
+update() //敵の動きを更新（移動）
+display()//敵を描写する
+reverseDirection()//向きを反転する
+die()//倒された時の処理
+isColliding(Mainchara other)//主人公キャラとの衝突判定
+
+_________________________________________________________
+Kuriboクラス(Enemyクラスを継承する)
+
+Nokonokoクラス（Enemyクラスを継承する）→プラスでjump()メソッド（ジャンプをする関数）を作成する。
+
+Pakkunクラス（Enemyクラスを継承する）
+
+Kuppaクラス（Enemyクラスを継承する）→プラスでjump()メソッド（ジャンプをする関数）とfire()メソッド（ファイヤーを吐き出す関数）を作成する。
+
+Dossunクラス（Enemyクラスを継承する）→プラスでdrop()メソッド（上から下りてくる関数）を作成する。
+
+Hagurumaクラス(Enemyクラスを継承する)
+　　　　　　　　　

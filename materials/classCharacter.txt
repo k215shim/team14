@@ -1,0 +1,10 @@
+Characterクラス（最上位の継承元）
+主担当者:山口哲平
+属性（変数）一覧: float x,y;//位置
+　　　　　　　　　float w = 32, h = 32; //サイズ
+　　　　　　　　　boolean onGround = false;//地面との接地判定
+　　　　　　　　　PImage = img; //表示する画像
+
+メソッド一覧:update();//重力と地面との接地判定を1/60秒の間で繰り返し行う
+             display();//キャラクターを画面上に表示させる関数
+　　　　　　setPosition(float newX,float newY);//そのキャラクターを設置する場所を決定する。
