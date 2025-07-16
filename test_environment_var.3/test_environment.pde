@@ -1,4 +1,5 @@
-int tileSize = 64;
+int tileSize = 50;
+int[] solidTiles = {1, 3, 4, 5};
 PImage grassGroundImg;
 PImage grassImg;
 PImage soilImg;
@@ -23,14 +24,18 @@ Player player;
 int[][] map = {
    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-   {1, 1, 1, 1, 4, 0, 0, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-   {3, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+   {2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+   {1, 1, 1, 1, 4, 0, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+   {3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
   };
 
 void setup() {
   size(600, 300);
+  background(216, 151, 71);
+  
   bgImg = loadImage("background.png");
+  
   normalImgLeft = loadImage("player12.png");  // スケッチと同じフォルダに配置
   normalImgRight = loadImage("player0.png");
   blinkImgLeft = loadImage("player13.png");
@@ -60,17 +65,18 @@ void setup() {
     walkLeftFrames[i] = loadImage("player" + (i + 16) + ".png");
   }
   
-  player = new Player(0, height - 169, 75, 75, 
+  player = new Player(0, height - 164, 75, 75, 
   normalImgLeft, normalImgRight, 
   blinkImgLeft, blinkImgRight, 
   sleepImgLeft, sleepImgRight, 
   walkLeftFrames, walkRightFrames, 
   sleepyFramesLeft, sleepyFramesRight, 
   sleepyDurations,
-  jumpImgLeft, jumpImgRight
+  jumpImgLeft, jumpImgRight,
+  0, height - 164
   );
   
-  player.groundY = height - 169;
+  player.groundY = height - 164;
 }
 
 void drawMap() {
@@ -95,12 +101,22 @@ void drawMap() {
   }
 }
 
+boolean isSolidTile(int tileX, int tileY) {
+  if (tileY < 0 || tileY >= map.length || tileX < 0 || tileX >= map[0].length) return false;
+  int tile = map[tileY][tileX];
+  for (int i = 0; i < solidTiles.length; i++) {
+    if (tile == solidTiles[i]) return true;
+  }
+  return false;
+}
+
 void draw() {
-  background(0);
+  background(216, 151, 71);
   pushMatrix();
   translate(-player.getCameraOffsetX(), 0);
   
-  image(bgImg, 0, 0, 600, 300);
+  //image(bgImg, 0, 0, 600, 300);
+  
   drawMap();
   popMatrix();
   

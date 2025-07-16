@@ -15,9 +15,7 @@ class Character {
 
   int currentFrame = 0;
   int frameCounter = 0;
-  int animationSpeed = 3;
-
- 
+  int animationSpeed = 5;
 
   Character(int x, int y, int w, int h,
     PImage normalImgLeft, PImage normalImgRight,
@@ -47,31 +45,60 @@ class Character {
     y += vy;
   }
   
-  void checkCollision(int[][] map, int tileSize) {
+  void checkCollision(int tileSize) {
     int margin = 14;
+    //足元の当たり判定
     int footX = (x + w / 2) / tileSize;
     int footY = (y + h - margin) / tileSize;
-    
-    if (footY < map.length && footX < map[0].length && (map[footY][footX] == 1|| map[footY][footX] == 4 || map[footY][footX] == 5)) {  
+    if (isSolidTile(footX, footY)) {
       y = footY * tileSize - h + margin;
       vy = 0;
-      isOnGround = true;    
+      isOnGround = true;
+    }
+    else {
+      isOnGround = false;
+    }
+    
+    //左側の壁との判定
+    int leftX = (x + 4) / tileSize;
+    int bodyY = (y + h / 2) / tileSize;
+    if ( vx < 0 && isSolidTile(leftX, bodyY)) {
+      x = (leftX + 1) * tileSize - 4; // めり込み調整
+      vx = 0;
+    }
+    
+     // 右側の壁との判定
+  int rightX = (x + w - 4) / tileSize;
+  if (vx > 0 && isSolidTile(rightX, bodyY)) {
+    x = rightX * tileSize - w + 4;
+    vx = 0;
   }
-      else {  
-        isOnGround = false;  
-    }  
+
+  // 天井との当たり判定（ジャンプ中）
+  int headX = (x + w / 2) / tileSize;
+  int headY = y / tileSize;
+  if (vy < 0 && isSolidTile(headX, headY)) {
+    vy = 0;
+  }
   }
   
   void updateAnimation() {
     x += vx;
-
     
-
-   
+     if (vx != 0) {
+      frameCounter++;
+      int len = faceLeft ? walkLeftFrames.length : walkRightFrames.length;
+      if (frameCounter % animationSpeed == 0) {
+        currentFrame = (currentFrame + 1) % len;
+      }
+    } 
+    else {
+      currentFrame = 0;
+    }
   }
 
   void move(int dir) {
-    vx = 4.5 * dir;
+    vx = 3.8 * dir;
     faceLeft = dir < 0;
   }
 

@@ -1,11 +1,12 @@
 class Player extends Character {
+  int startX, startY;
   //ジャンプ
   PImage jumpImgLeft, jumpImgRight;
   float jumpPower = -5;
   boolean isJumping = false;
   int groundY;
   int jumpPhase = 0;
-  int jumpPauseDuration = 4;
+  int jumpPauseDuration = 12;
   int jumpPauseCounter = 0;
   
   int lastActionTime = 0;
@@ -35,7 +36,8 @@ class Player extends Character {
     PImage[] walkLeftFrames, PImage[] walkRightFrames,
     PImage[] sleepyFramesLeft, PImage[] sleepyFramesRight,
     int[] sleepyDurations,
-     PImage jumpImgLeft, PImage jumpImgRight
+     PImage jumpImgLeft, PImage jumpImgRight,
+     int startX, int startY
      ) {
 
     super(x, y, w, h,
@@ -50,6 +52,8 @@ class Player extends Character {
     this.sleepImgRight = sleepImgRight;
     this.jumpImgLeft = jumpImgLeft;
     this.jumpImgRight = jumpImgRight;
+    this.startX = startX;
+    this.startY = startY;
     lastActionTime = millis();
     
     blinkTimer = blinkCooldown;
@@ -77,17 +81,6 @@ class Player extends Character {
         blinkTimer = blinkCooldown;
     }
   }
-  
-  if (vx != 0) {
-      frameCounter++;
-      int len = faceLeft ? walkLeftFrames.length : walkRightFrames.length;
-      if (frameCounter % animationSpeed == 0) {
-        currentFrame = (currentFrame + 1) % len;
-      }
-    } 
-    else {
-      currentFrame = 0;
-    }
     
     applyGravity();
     updatePosition();
@@ -96,7 +89,7 @@ class Player extends Character {
     int maxOffset = max(0, map[0].length * tileSize - width);
   cameraOffsetX = constrain(cameraOffsetX, 0, maxOffset);
     
-    checkCollision(map, tileSize);
+    checkCollision(tileSize);
     updateAnimation();
     
     if (isOnGround) {
@@ -121,7 +114,7 @@ class Player extends Character {
         case 1:
         jumpPauseCounter++;
         if (jumpPauseCounter >= jumpPauseDuration) {
-          vy = 0.9;
+          vy = 0;
           jumpPhase = 2;
         }
         break;
@@ -137,6 +130,10 @@ class Player extends Character {
         }
         break;
       }
+    }
+    
+    if ( y > height + 420) {
+      respawn();
     }
   }
   
@@ -176,10 +173,10 @@ class Player extends Character {
   }
   
   void jump() {
-    if (!isJumping) {
+    if ( vy == 0 && !isJumping && isOnGround) {
       isJumping = true;
       jumpPhase = 0;
-      vy = -20;
+      vy = -30;
       notifyAction();
     }
   }
@@ -192,5 +189,18 @@ class Player extends Character {
   
   float getCameraOffsetX() {
     return cameraOffsetX;
+  }
+  
+  void respawn() {
+    x = startX;
+    y = startY;
+    vx = 0;
+    vy = 0;
+    isJumping = false;
+    jumpPhase = 0;
+    isOnGround = false;
+    isAsleep = false;
+    isSleepy = false;
+    notifyAction();
   }
 }
