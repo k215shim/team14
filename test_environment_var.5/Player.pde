@@ -4,7 +4,6 @@ class Player extends Character {
   PImage jumpImgLeft, jumpImgRight;
   float jumpPower = -5;
   boolean isJumping = false;
-  boolean canJump = true;
   int groundY;
   int jumpPhase = 0;
   int jumpPauseDuration = 12;
@@ -174,12 +173,11 @@ class Player extends Character {
   }
   
   void jump() {
-    if ( canJump && vy == 0 && !isJumping && isOnGround) {
+    if ( vy == 0 && !isJumping && isOnGround) {
       isJumping = true;
       jumpPhase = 0;
       vy = -30;
       notifyAction();
-      canJump = false;
     }
   }
   

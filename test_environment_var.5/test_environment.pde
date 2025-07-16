@@ -1,74 +1,53 @@
-int tileSize = 40;
-int objTileSize = 30;
-int[] solidTiles = {1, 3, 4, 5};
+int tileSize = 50;
+int[] solidTiles = {1, 3, 4, };
 PImage grassGroundImg;
 PImage grassImg;
 PImage soilImg;
 PImage cliff_left;
 PImage cliff_right;
 PImage blockImg;
-PImage bgImg;
-
-PGraphics stageBuffer;
-PGraphics objTileBuffer;
-PGraphics bgBuffer;
-
+PImage kirikabuImg;
+PImage idoImg;
+PImage kiImg;
+PImage kusaImg;
 PImage normalImgLeft;
 PImage normalImgRight;
 PImage blinkImgLeft;
 PImage blinkImgRight;
 PImage sleepImgLeft;
 PImage sleepImgRight;
-
 PImage[] walkRightFrames = new PImage[8];
 PImage[] walkLeftFrames = new PImage[8];
 PImage[] sleepyFramesLeft = new PImage[2];
 PImage[] sleepyFramesRight = new PImage[2];
-
 PImage jumpImgLeft;
 PImage jumpImgRight;
-
+PImage bgImg;
 int[] sleepyDurations = {75, 10};
 Player player;
 
 int[][] map = {
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-   {1, 1, 1, 1, 4, 0, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-   {3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
-  };
-  
-int[][] objMap = {
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-  };
-  
-  int[] bgMap = {7, 7};
-  
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 2, 2, 5, 2, 2, 5, 0, 0, 0, 0, 0, 2, 0, 0, 4},
+  {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1}
+};
+
 void setup() {
-  size(700, 350);
+  size(800, 300);
   background(216, 151, 71);
-  
+
   bgImg = loadImage("background.png");
-  
-  normalImgLeft = loadImage("player12.png");  // スケッチと同じフォルダに配置
+
+  normalImgLeft = loadImage("player12.png");
   normalImgRight = loadImage("player0.png");
   blinkImgLeft = loadImage("player13.png");
   blinkImgRight = loadImage("player1.png");
   sleepImgLeft = loadImage("player15.png");
   sleepImgRight = loadImage("player3.png");
-  
+
   sleepyFramesLeft[0] = loadImage("player14.png");
   sleepyFramesLeft[1] = loadImage("player15.png");
   sleepyFramesRight[0] = loadImage("player2.png");
@@ -76,80 +55,52 @@ void setup() {
 
   jumpImgLeft = loadImage("player25.png");
   jumpImgRight = loadImage("player24.png");
-  
+
   grassGroundImg = loadImage("grass0.png");
   grassImg = loadImage("grass1.png");
   soilImg = loadImage("soil.png");
   cliff_left = loadImage("cliff_left.png");
   cliff_right = loadImage("cliff_right.png");
   blockImg = loadImage("block_renga_gray.png");
-  
+  kirikabuImg = loadImage("kirikabu_02.png");
+  idoImg = loadImage("ido_brown.png");
+  kiImg = loadImage("ki_01_01.png");
+
   for (int i = 0; i < 8; i++) {
     walkRightFrames[i] = loadImage("player" + (i + 4) + ".png");
   }
-  
+
   for (int i = 0; i < 8; i++) {
     walkLeftFrames[i] = loadImage("player" + (i + 16) + ".png");
   }
-  
-  player = new Player(0, height - 228, 80, 80, 
-  normalImgLeft, normalImgRight, 
-  blinkImgLeft, blinkImgRight, 
-  sleepImgLeft, sleepImgRight, 
-  walkLeftFrames, walkRightFrames, 
-  sleepyFramesLeft, sleepyFramesRight, 
-  sleepyDurations,
-  jumpImgLeft, jumpImgRight,
-  0, height - 128
+
+  player = new Player(0, height - 164, 75, 75, 
+    normalImgLeft, normalImgRight, 
+    blinkImgLeft, blinkImgRight, 
+    sleepImgLeft, sleepImgRight, 
+    walkLeftFrames, walkRightFrames, 
+    sleepyFramesLeft, sleepyFramesRight, 
+    sleepyDurations,
+    jumpImgLeft, jumpImgRight,
+    0, height - 164
   );
-  
-  player.groundY = height - 128;
-  
-   stageBuffer = createGraphics(tileSize * map[0].length, tileSize * map.length);
-  stageBuffer.beginDraw();
-  
-   for (int row = 0; row < map.length; row++) {
+
+  player.groundY = height - 164;
+}
+
+void drawMap() {
+  for (int row = 0; row < map.length; row++) {
     for (int col = 0; col < map[row].length; col++) {
       int tile = map[row][col];
-      PImage tileImg = null;
-      
-      if (tile == 1) tileImg = grassGroundImg;
-      else if (tile == 2) tileImg = grassImg;
-      else if (tile == 3) tileImg = soilImg;
-      else if (tile == 4) tileImg = cliff_left;
-      else if (tile == 5) tileImg = cliff_right;
-      
-      if (tileImg != null) {
-        stageBuffer.image(tileImg, col * tileSize, row * tileSize, tileSize, tileSize);
-      }
-    }
-  }
-  
-  stageBuffer.endDraw();
-  
-  objTileBuffer = createGraphics(tileSize * objMap[0].length, tileSize * objMap.length);
-  objTileBuffer.beginDraw();
-  for (int row = 0; row < objMap.length; row++) {
-    for (int col = 0; col < objMap[row].length; col++) {
-      int tile = objMap[row][col];
-      if (tile == 6) {
-        objTileBuffer.image(blockImg, col * objTileSize, row * objTileSize, objTileSize, objTileSize);
-      }
-    }
-  }
-  objTileBuffer.endDraw();
-  
-  bgBuffer = createGraphics(tileSize * map[0].length, tileSize * map.length);
-  bgBuffer.beginDraw();
+      float x = col * tileSize;
+      float y = row * tileSize;
 
-  int tilesX = ceil((float)bgBuffer.width / bgImg.width);  // 横に必要な画像の枚数
-  int tilesY = ceil((float)bgBuffer.height / bgImg.height); // 高さ方向（通常1でOK）
-
-  for (int y = 0; y < tilesY; y++) {
-    for (int x = 0; x < tilesX; x++) {
-      bgBuffer.image(bgImg, x * bgImg.width, y * bgImg.height);
+      if (tile == 1) image(grassGroundImg, x, y, tileSize, tileSize);
+      else if (tile == 2) image(grassImg, x, y, tileSize, tileSize);
+      else if (tile == 3) image(blockImg, x, y, tileSize, tileSize);
+      else if (tile == 4) image(idoImg, x, y, tileSize, tileSize);
+      else if (tile == 5) image(kiImg, x, y - tileSize * 0.8, tileSize, tileSize * 1.8);
     }
-    bgBuffer.endDraw();
   }
 }
 
@@ -164,20 +115,18 @@ boolean isSolidTile(int tileX, int tileY) {
 
 void draw() {
   background(216, 151, 71);
-  
- float offsetX = player.getCameraOffsetX();
- 
- image(bgBuffer, -offsetX, 0);
- image(objTileBuffer, -offsetX, 0);
- image(stageBuffer, -offsetX, 0);
- 
+  pushMatrix();
+  translate(-player.getCameraOffsetX(), 0);
+  drawMap();
+  popMatrix();
+
   player.update();
   player.display();
 }
 
 void keyPressed() {
   player.notifyAction();
-  
+
   if (keyCode == LEFT) {
     player.move(-1);
   }
@@ -192,8 +141,5 @@ void keyPressed() {
 void keyReleased() {
   if (keyCode == LEFT || keyCode == RIGHT) {
     player.stop();
-  }
-  if (key == ' ' || keyCode == UP) {
-    player.canJump = true;
   }
 }
