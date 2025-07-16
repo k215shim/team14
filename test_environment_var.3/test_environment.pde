@@ -1,4 +1,4 @@
-int tileSize = 50;
+int tileSize = 50; 
 int[] solidTiles = {1, 3, 4, };
 PImage grassGroundImg;
 PImage grassImg;
