@@ -79,7 +79,10 @@ void setup() {
   
   bgImg = loadImage("background.png");
   PImage ookamiImg = loadImage("ookami.png");
-  PImage ookamiImg2 = loadImage("ookami2.jpg");
+  PImage ookamiImg2 = loadImage("ookami2.png");
+  
+  println("img1: " + ookamiImg);
+println("img2: " + ookamiImg2);
   
   normalImgLeft = loadImage("player12.png");  // スケッチと同じフォルダに配置
   normalImgRight = loadImage("player0.png");
