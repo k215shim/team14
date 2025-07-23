@@ -25,6 +25,7 @@ PImage jumpImgRight;
 PImage bgImg;
 int[] sleepyDurations = {75, 10};
 Player player;
+float cameraX=0;
 
 int[][] map = {
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -115,10 +116,15 @@ boolean isSolidTile(int tileX, int tileY) {
 
 void draw() {
   background(216, 151, 71);
+  cameraX = player.x - width/2;
+  translate(-cameraX,0);
   pushMatrix();
   translate(-player.getCameraOffsetX(), 0);
   drawMap();
   popMatrix();
+  
+  fill(100,200,100);
+  rect(-1000,400,3000,200);
 
   player.update();
   player.display();

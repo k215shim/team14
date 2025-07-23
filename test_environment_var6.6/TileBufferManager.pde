@@ -6,13 +6,13 @@ class TileBufferManager {
   int tileSize, objTileSize;
   int[][] map, objMap;
   PImage bgImg, blockImg;
-  PImage grassGroundImg, grassImg, soilImg, cliff_left, cliff_right;
+  PImage grassGroundImg, grassImg, soilImg, cliff_left, cliff_right ,imgKareki,imgMidoriKi,imgRenga;
 
   TileBufferManager(
     int tileSize, int objTileSize,
     int[][] map, int[][] objMap,
     PImage bgImg, PImage blockImg,
-    PImage grassGroundImg, PImage grassImg, PImage soilImg, PImage cliff_left, PImage cliff_right
+    PImage grassGroundImg, PImage grassImg, PImage soilImg, PImage cliff_left, PImage cliff_right,PImage imgKareki,PImage imgMidoriKi,PImage imgRenga
   ) {
     this.tileSize = tileSize;
     this.objTileSize = objTileSize;
@@ -25,11 +25,16 @@ class TileBufferManager {
     this.soilImg = soilImg;
     this.cliff_left = cliff_left;
     this.cliff_right = cliff_right;
+    this.imgKareki=imgKareki;
+    this.imgMidoriKi=imgMidoriKi;
+    this.imgRenga=imgRenga;
 
     createStageBuffer();
     createObjectBuffer();
     createBackgroundBuffer();
   }
+
+
 
   void createStageBuffer() {
     stageBuffer = createGraphics(tileSize * map[0].length, tileSize * map.length);
@@ -44,6 +49,9 @@ class TileBufferManager {
         else if (tile == 3) tileImg = soilImg;
         else if (tile == 4) tileImg = cliff_left;
         else if (tile == 5) tileImg = cliff_right;
+        else if(tile==7) tileImg = imgKareki;
+        else if(tile==8) tileImg=imgMidoriKi;
+        else if(tile==9) tileImg=imgRenga; 
 
         if (tileImg != null) {
           stageBuffer.image(tileImg, col * tileSize, row * tileSize, tileSize, tileSize);

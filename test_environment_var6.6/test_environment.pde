@@ -8,6 +8,10 @@ PImage cliff_left;
 PImage cliff_right;
 PImage blockImg;
 PImage bgImg;
+PImage imgKareki, imgMidoriKi, imgRenga;
+TileBufferManager tileManager;
+boolean gameCleared = false;
+
 
 PGraphics stageBuffer;
 PGraphics objTileBuffer;
@@ -45,16 +49,16 @@ int[][] map = {
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-   {2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3, 3, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-   {3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+   {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0},
+   {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0},
+   {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0},
+   {8, 8, 8, 2, 2, 1, 7, 2, 2, 7, 2, 2, 2, 7, 2, 2, 2, 2, 2, 2, 2, 1, 3, 3, 2, 1, 2, 2, 2, 0, 0, 2, 2, 7, 9, 2, 2},
+   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+   {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3, 3, 3}
   };
   
 int[][] objMap = {
@@ -103,6 +107,15 @@ void setup() {
   cliff_left = loadImage("cliff_left.png");
   cliff_right = loadImage("cliff_right.png");
   blockImg = loadImage("renga.png");
+   imgKareki = loadImage("ki_kareki.png");
+  imgMidoriKi = loadImage("ki_01_01.png");
+  imgRenga = loadImage("block_renga_gray.png");
+  
+  tileManager = new TileBufferManager(
+    tileSize, objTileSize, map, objMap,
+    bgImg, blockImg,
+    grassGroundImg, grassImg, soilImg, cliff_left, cliff_right ,imgKareki ,imgMidoriKi,imgRenga
+  );
   
   for (int i = 0; i < 8; i++) {
     walkRightFrames[i] = loadImage("player" + (i + 4) + ".png");
@@ -117,10 +130,13 @@ void setup() {
    Hitbox playerBox = new Hitbox(20, height - 156, 44, 80);
    Hitbox wolfBox = new Hitbox(500, height - 156, 40, 40);
    
+
    bufferManager = new TileBufferManager(
     tileSize, objTileSize, map, objMap,
     bgImg, blockImg,
-    grassGroundImg, grassImg, soilImg, cliff_left, cliff_right
+    grassGroundImg, grassImg, soilImg, cliff_left, cliff_right,imgKareki,imgMidoriKi,imgRenga
+
+ 
   );
   
   player = new Player(
@@ -195,6 +211,31 @@ bufferManager.drawAll(offsetX);
   
   fly.update();
   fly.display(player.getCameraOffsetX());
+
+// プレイヤーのマップ上の座標を取得
+int px = int((player.hitbox.getX() + player.hitbox.getW() / 2) / tileSize);
+int py = int((player.hitbox.getY() + player.hitbox.getH() / 2) / tileSize);
+
+// クリア条件：tileIDが9の縦ライン上（列34または35）を通過
+if (!gameCleared && (px == 34 || px == 35)) {
+  for (int y = 0; y < map.length; y++) {
+    if (map[y][px] == 9) {
+      gameCleared = true;
+      break;
+    }
+  }
+}
+
+// クリア時に表示
+if (gameCleared) {
+  fill(0, 0, 0, 180);
+  rect(0, 0, width, height);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(48);
+  text("game clear", width / 2, height / 2);
+}
+
 }
 
 void keyPressed() {
