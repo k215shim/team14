@@ -8,13 +8,16 @@ class TileBufferManager {
   PImage bgImg, blockImg;
   PImage grassGroundImg, grassImg, soilImg, cliff_left, cliff_right;
   PImage floatGrassImg, floatCliffLeft, floatCliffRight;
-
+  PImage imgKareki,imgMidoriKi,imgRenga;
+  PImage slopeleftImg;
   TileBufferManager(
     int tileSize, int objTileSize,
     int[][] map, int[][] objMap,
     PImage bgImg, PImage blockImg,
     PImage grassGroundImg, PImage grassImg, PImage soilImg, PImage cliff_left, PImage cliff_right,
-    PImage floatGrassImg, PImage floatCliffLeft, PImage floatCliffRight
+    PImage floatGrassImg, PImage floatCliffLeft, PImage floatCliffRight,
+    PImage imgKareki,PImage imgMidoriKi,PImage imgRenga,
+     PImage slopeleftImg
   ) {
     this.tileSize = tileSize;
     this.objTileSize = objTileSize;
@@ -30,6 +33,11 @@ class TileBufferManager {
     this.floatGrassImg = floatGrassImg;
     this.floatCliffLeft = floatCliffLeft;
     this.floatCliffRight = floatCliffRight;
+     this.imgKareki=imgKareki;
+    this.imgMidoriKi=imgMidoriKi;
+    this.imgRenga=imgRenga;
+    this.slopeleftImg= slopeleftImg;
+    
 
     createStageBuffer();
     createObjectBuffer();
@@ -52,6 +60,10 @@ class TileBufferManager {
         else if (tile == 7) tileImg = floatGrassImg;
         else if (tile == 8) tileImg = floatCliffLeft;
         else if (tile == 9) tileImg = floatCliffRight;
+        else if(tile==10) tileImg = imgKareki;
+        else if(tile==11) tileImg=imgMidoriKi;
+        else if(tile==12) tileImg=imgRenga; 
+        else if(tile==13) tileImg=slopeleftImg;
 
         if (tileImg != null) {
           stageBuffer.image(tileImg, col * tileSize, row * tileSize, tileSize, tileSize);

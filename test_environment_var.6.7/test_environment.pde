@@ -405,7 +405,6 @@ void setup() {
 int py = int((player.hitbox.getY() + player.hitbox.getH() / 2) / tileSize);
 
 if (!gameCleared && px == 46) { // ← tileID=9があ
-る列
   for (int y = 10; y <= 13; y++) {// tileID=9がある行
     if (map[y][px] == 9) {
        
