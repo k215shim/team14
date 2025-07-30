@@ -10,6 +10,7 @@ class TileBufferManager {
   PImage floatGrassImg, floatCliffLeft, floatCliffRight;
   PImage imgKareki,imgMidoriKi,imgRenga;
   PImage slopeleftImg;
+  PImage[] goalFlag = new PImage[3]; 
   TileBufferManager(
     int tileSize, int objTileSize,
     int[][] map, int[][] objMap,
@@ -17,7 +18,8 @@ class TileBufferManager {
     PImage grassGroundImg, PImage grassImg, PImage soilImg, PImage cliff_left, PImage cliff_right,
     PImage floatGrassImg, PImage floatCliffLeft, PImage floatCliffRight,
     PImage imgKareki,PImage imgMidoriKi,PImage imgRenga,
-     PImage slopeleftImg
+     PImage slopeleftImg,
+     PImage[] goalFlag
   ) {
     this.tileSize = tileSize;
     this.objTileSize = objTileSize;
@@ -37,6 +39,7 @@ class TileBufferManager {
     this.imgMidoriKi=imgMidoriKi;
     this.imgRenga=imgRenga;
     this.slopeleftImg= slopeleftImg;
+    this.goalFlag = goalFlag;
     
 
     createStageBuffer();
@@ -64,6 +67,9 @@ class TileBufferManager {
         else if(tile==11) tileImg=imgMidoriKi;
         else if(tile==12) tileImg=imgRenga; 
         else if(tile==13) tileImg=slopeleftImg;
+        else if(tile==15) tileImg = goalFlag[0];
+        else if(tile==16) tileImg = goalFlag[1];
+        else if(tile==17) tileImg = goalFlag[2];
 
         if (tileImg != null) {
           stageBuffer.image(tileImg, col * tileSize, row * tileSize, tileSize, tileSize);
