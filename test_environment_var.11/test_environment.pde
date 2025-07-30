@@ -537,6 +537,9 @@ void displayGameClearScreen() {
  void restartGame(boolean isRetry) {
      player.hasFirePower = false;
      player.resetPosition();
+     
+      gameCleared = false;
+     
     if (isRetry) {  
       gameState = state_play;
 

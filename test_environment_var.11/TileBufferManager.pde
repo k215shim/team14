@@ -102,7 +102,7 @@ class TileBufferManager {
   }
 
   void drawAll(float offsetX, float offsetY) {
-    image(bgBuffer, -offsetX / 5, offsetY);
+    image(bgBuffer, -offsetX , offsetY);
     image(objTileBuffer, -offsetX, offsetY);
     image(stageBuffer, -offsetX, offsetY);
   }
