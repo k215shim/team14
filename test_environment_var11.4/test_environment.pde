@@ -3,11 +3,14 @@ int objTileSize = 22;
 int[] solidTiles = {1, 3, 4, 5, 6, 7, 8, 9,13,14};
 int currentStage = 1;
 
-PImage ookamiImg;
-PImage ookamiImg2;
+PImage ookamiImgL,ookamiBlinkL;
+PImage ookamiImgR,ookamiBlinkR;
 PImage f1;
 PImage f2;
-
+PImage hagurumaImg0,hagurumaImg1;
+PImage frankensteinNormalLeft, frankensteinNormalRight;
+PImage frankensteinBlinkLeft,  frankensteinBlinkRight;
+PImage[] frankensteinWalkLeft, frankensteinWalkRight;
 
 boolean gameCleared = false;
 float cameraOffsetX = 0;
@@ -39,7 +42,6 @@ PImage imgKareki,imgMidoriKi,imgRenga;
 PImage slopeleftImg;
 PImage[] goalFlag = new PImage[3];
 
-
 PGraphics stageBuffer;
 PGraphics objTileBuffer;
 PGraphics bgBuffer;
@@ -62,6 +64,8 @@ PImage jumpImgRight;
 Enemy enemy;
 Ookami wolf;
 Flymiira fly;
+Haguruma haguruma;
+Frankenstein frankenstein;
 
 int CHARGE_1 = 30;
 int CHARGE_2 = 60;
@@ -158,12 +162,24 @@ void setup() {
   background(216, 151, 71);
   
   bgImg = loadImage("background.png");
+
   
-  
-  ookamiImg = loadImage("ookami0.png");
-  ookamiImg2 = loadImage("ookami1.png");
+  ookamiImgL = loadImage("ookami0.png");
+  ookamiBlinkL = loadImage("ookami1.png");
+  ookamiImgR = loadImage("ookami0_right.png");
+  ookamiBlinkR = loadImage("ookami1_right.png");
   f1 = loadImage("fly.png");
   f2 = loadImage("fly2.png");
+  hagurumaImg0 = loadImage("haguruma0.png");
+  hagurumaImg1 = loadImage("haguruma1.png");
+  frankensteinNormalLeft  = loadImage("franken_normal_left.png");
+  frankensteinNormalRight = loadImage("franken_normal_right.png");
+  frankensteinBlinkLeft   = loadImage("franken_blink_left.png");
+  frankensteinBlinkRight  = loadImage("franken_blink_right.png");
+  frankensteinWalkLeft    = new PImage[]{ loadImage("franken_walk_left_0.png"), loadImage("franken_walk_left_1.png") };
+  frankensteinWalkRight   = new PImage[]{ loadImage("franken_walk_right_0.png"), loadImage("franken_walk_right_1.png") };
+
+
   
   
   
@@ -234,6 +250,7 @@ void setup() {
   for (int i = 0; i < 6; i++) hpGaugeNormal[i] = loadImage("hpgauge" + i + ".png");
   for (int i = 0; i < 6; i++) hpGaugeFlame[i] = loadImage("hpgauge" + (i + 6) + ".png");
   manaIcon = loadImage("mana0.png");
+  
   
   itemManager = new ItemManager();
   itemManager.registerItems();
@@ -425,7 +442,7 @@ void setup() {
     int py = int((player.hitbox.getY() + player.hitbox.getH() / 2) / tileSize);
 
 if (!gameCleared && (px==179)) { 
-  for (int y = 10; y <=18; y++) {
+  for (int y = 10; y < map.length; y++) {
       println(y,px);
     if (map[y][px] == 15 || map[y][px] == 16 || map[y][px] == 17) {
       gameCleared = true;

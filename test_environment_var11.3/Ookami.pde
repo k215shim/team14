@@ -31,8 +31,8 @@ class Ookami extends Enemy {
       hitbox,
       img, img,
       img, img,
-      new PImage[]{ img,img2 },    // 左歩行フレーム
-      new PImage[]{ img,img2 },    // 右歩行フレーム
+      new PImage[]{ img,img2 },    // 歩行フレーム：単一画像
+      new PImage[]{ img,img2 },
       target,
       0.8f,                   // 移動速度（ゆっくり）
       collider, colHand,
@@ -80,28 +80,4 @@ void update() {
       target.takeDamage();
     }
    }
-   @Override
-  void display(float cameraOffsetX) {
-    // ワールド座標→画面座標
-    float x = hitbox.getX() - cameraOffsetX;
-    float y = hitbox.getY();
-
-    // 今のフレームを選ぶ（super の updateAnimation() で currentFrame が回っている想定）
-    // ここでは normal/blink の２枚だけなので、
-    // currentFrame が 0→normal、1→blink になるようにしてください。
-    PImage frame = (currentFrame % 2 == 0) ? normalImgLeft : blinkImgLeft;
-
-    pushMatrix();
-      // 左向きなら (x+drawW,y) を原点にして -1 スケール、
-      // 右向きなら (x,y) にして +1 スケール
-      if (dir < 0) {
-        translate(x + drawW, y);
-        scale(-1, 1);
-      } else {
-        translate(x, y);
-        scale(1, 1);
-      }
-      image(frame, 0, 0, drawW, drawH);
-    popMatrix();
-  }
-}
+ }

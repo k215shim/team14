@@ -17,8 +17,8 @@ class Ookami extends Enemy {
    * @param colHand  衝突処理用 CollisionHandler
    */
   Ookami(Hitbox hitbox,
-         PImage img,
-         PImage img2,
+         PImage normalL,PImage blinkL,
+         PImage normalR,PImage blinkR,
          Player target,
          CollisionChecker collider,
          CollisionHandler colHand,
@@ -29,10 +29,10 @@ class Ookami extends Enemy {
     // 速度は 0.5f で「ゆっくり」
     super(
       hitbox,
-      img, img,
-      img, img,
-      new PImage[]{ img,img2 },    // 左歩行フレーム
-      new PImage[]{ img,img2 },    // 右歩行フレーム
+      normalL, normalR,
+      blinkL, blinkR,
+      new PImage[]{ normalL,blinkL },    // 歩行フレーム：単一画像
+      new PImage[]{ normalR,blinkR },
       target,
       0.8f,                   // 移動速度（ゆっくり）
       collider, colHand,
@@ -52,6 +52,44 @@ class Ookami extends Enemy {
 void update() {
     // ── 毎フレーム、同じ方向にだけ進む ──
     if (!isAlive) return;
+    // ── 前方に足場がなければ方向転換 ──
+  {
+    // Hitbox の前端座標を計算
+    float frontX = hitbox.getX() + (dir > 0 ? hitbox.getW() : 0);
+    // Hitbox の足下少し下を調べる
+    float footY  = hitbox.getY() + hitbox.getH() + 1;
+    // タイル座標に変換
+    int tileX = (int)floor(frontX / tileSize);
+    int tileY = (int)floor(footY  / tileSize);
+    // collisionChecker に足場判定用のメソッドがあれば使う
+    boolean hasGround = collider.isTileSolidMap(tileX, tileY)|| collider.isTileSolidObj(tileX, tileY);
+    // もし無ければ向きを反転
+    if (!hasGround) {
+      dir *= -1;
+    }
+  }
+  
+   // ── 前方・後方に壁があれば方向転換 ──
+  {
+    float y    = hitbox.getY();
+    int w    = hitbox.getW();
+    int h    = hitbox.getH();
+    // 今向いている方向（前方）にほんの少し移動
+    float frontX = hitbox.getX() + dir * 1;
+    // 逆向き（後方）にもほんの少し移動
+    float backX  = hitbox.getX() - dir * 1;
+
+    boolean frontHit = collider.isWallCollision(frontX, y, w, h);
+    boolean backHit  = collider.isWallCollision(backX,  y, w, h);
+
+    if (frontHit || backHit) {
+      dir *= -1;
+    }
+  }
+
+
+  // ── ダメージ中のノックバック処理 ──
+    
     
     if (isKnockback) {
       knockbackTimer--;
@@ -80,28 +118,6 @@ void update() {
       target.takeDamage();
     }
    }
-   @Override
-  void display(float cameraOffsetX) {
-    // ワールド座標→画面座標
-    float x = hitbox.getX() - cameraOffsetX;
-    float y = hitbox.getY();
-
-    // 今のフレームを選ぶ（super の updateAnimation() で currentFrame が回っている想定）
-    // ここでは normal/blink の２枚だけなので、
-    // currentFrame が 0→normal、1→blink になるようにしてください。
-    PImage frame = (currentFrame % 2 == 0) ? normalImgLeft : blinkImgLeft;
-
-    pushMatrix();
-      // 左向きなら (x+drawW,y) を原点にして -1 スケール、
-      // 右向きなら (x,y) にして +1 スケール
-      if (dir < 0) {
-        translate(x + drawW, y);
-        scale(-1, 1);
-      } else {
-        translate(x, y);
-        scale(1, 1);
-      }
-      image(frame, 0, 0, drawW, drawH);
-    popMatrix();
-  }
-}
+ 
+ }
+ 
