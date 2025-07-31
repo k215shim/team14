@@ -10,7 +10,6 @@ class ItemManager {
   void registerItems() {
     ArrayList<ItemData> items1 = new ArrayList<ItemData>();
     items1.add(new ItemData(180, 240, "rose"));
-    items1.add(new ItemData(1500, 240, "rose"));
     items1.add(new ItemData(100, 240, "mana"));
     items1.add(new ItemData(130, 240, "mana"));
     items1.add(new ItemData(160, 240, "mana"));    

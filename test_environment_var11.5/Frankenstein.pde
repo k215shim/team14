@@ -40,14 +40,8 @@ class Frankenstein extends Enemy {
       collider, colHand,
       hp, armor    // HP とアーマーを渡す
     );
-    this.drawW = 100;
-    this.drawH = 100;
-    
-        this.drawOffsetX = (hitbox.getW() - drawW) / 2;  
-
-// 垂直方向は hitbox の底＝スプライトの底 になるように調整
-// hitbox の高さは 40px、drawH は 80px なので 40 - 80 = -40
-this.drawOffsetY = hitbox.getH() - drawH+20;
+    this.drawW = 64;
+    this.drawH = 64;
     this.animationSpeed = 6;
   }
 

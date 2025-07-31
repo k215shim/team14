@@ -42,13 +42,8 @@ class Haguruma extends Enemy {
       hp, armor       // HP とアーマーを追加
     );
     this.dir = dir;
-    this.drawW = 80;
-    this.drawH = 80;
-        this.drawOffsetX = (hitbox.getW() - drawW) / 2;  
-
-// 垂直方向は hitbox の底＝スプライトの底 になるように調整
-// hitbox の高さは 40px、drawH は 80px なので 40 - 80 = -40
-this.drawOffsetY = hitbox.getH() - drawH+20;
+    this.drawW = 48;
+    this.drawH = 48;
     this.animationSpeed = 6; // 回転（歩行）アニメ速度
   }
 

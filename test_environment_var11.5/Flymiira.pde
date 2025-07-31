@@ -40,8 +40,8 @@ class Flymiira extends Enemy {
     );
     this.speed = speed;
     // 大きさやアニメ速度はお好みで
-    this.drawW = 100;
-    this.drawH = 100;
+    this.drawW = 70;
+    this.drawH = 70;
     this.animationSpeed = 8;  // フレーム切替の速さ調整
   }
 

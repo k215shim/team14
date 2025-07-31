@@ -41,13 +41,9 @@ class Ookami extends Enemy {
     
    this.dir = dir;
     // 描画サイズを 40x40 にオーバーライド
-    this.drawW = 80;
-    this.drawH = 80;
-    this.drawOffsetX = (hitbox.getW() - drawW) / 2;  
-
-// 垂直方向は hitbox の底＝スプライトの底 になるように調整
-// hitbox の高さは 40px、drawH は 80px なので 40 - 80 = -40
-this.drawOffsetY = hitbox.getH() - drawH+20;
+    this.drawW = 60;
+    this.drawH = 60;
+    
     this.animationSpeed = 10;  
 
   }
