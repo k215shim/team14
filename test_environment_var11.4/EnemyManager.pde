@@ -80,7 +80,7 @@ class EnemyManager {
   
   enemy1.add(new EnemyData(2300, groundY-36, "ookami",       -1, 0.5f, 4, 1));
   enemy1.add(new EnemyData(2500, groundY-36, "ookami",        1, 0.5f, 4, 1));
-  enemy1.add(new EnemyData(2800, groundY-36, "ookami",       -1, 0.5f, 4, 1));
+  enemy1.add(new EnemyData(2900, groundY-36, "ookami",       -1, 0.5f, 4, 1));
 
   // 終わり際にフライミーラも追加
   enemy1.add(new EnemyData(2750, groundY-36, "flymiira",     -1, 0.7f, 3, 0));
