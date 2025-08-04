@@ -19,7 +19,7 @@ aキーで能力を使用!
 
 aキーを長押しすると、、、
 ・一回チャージ
-![](images/charege1.png)
+![](images/charge1.png)
 ノックバックをダメージが上がるぞ！
 ![](images/mera.png)
 
