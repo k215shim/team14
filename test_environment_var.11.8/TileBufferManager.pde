@@ -10,7 +10,7 @@ class TileBufferManager {
   PImage floatGrassImg, floatCliffLeft, floatCliffRight;
   PImage imgKareki,imgMidoriKi,imgRenga;
   PImage slopeleftImg;
-  PImage[] goalFlag = new PImage[3]; 
+  PImage[] goalFlag;
   TileBufferManager(
     int tileSize, int objTileSize,
     int[][] map, int[][] objMap,
@@ -67,9 +67,17 @@ class TileBufferManager {
         else if(tile==11) tileImg=imgMidoriKi;
         else if(tile==12) tileImg=imgRenga; 
         else if(tile==13) tileImg=slopeleftImg;
+        
         else if(tile==15) tileImg = goalFlag[0];
         else if(tile==16) tileImg = goalFlag[1];
         else if(tile==17) tileImg = goalFlag[2];
+        else if(tile==18) tileImg = goalFlag[3];
+        else if(tile==19) tileImg = goalFlag[4];
+        else if(tile==20) tileImg = goalFlag[5];
+        else if(tile==21) tileImg = goalFlag[6];
+        else if(tile==22) tileImg = goalFlag[7];
+        else if(tile==23) tileImg = goalFlag[8];
+
 
         if (tileImg != null) {
           stageBuffer.image(tileImg, col * tileSize, row * tileSize, tileSize, tileSize);
@@ -108,7 +116,7 @@ class TileBufferManager {
   }
 
   void drawAll(float offsetX, float offsetY) {
-    image(bgBuffer, -offsetX / 5 , offsetY);
+    image(bgBuffer, -offsetX , offsetY);
     image(objTileBuffer, -offsetX, offsetY);
     image(stageBuffer, -offsetX, offsetY);
   }

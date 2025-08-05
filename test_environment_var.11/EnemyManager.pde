@@ -20,7 +20,6 @@ class EnemyManager {
     ArrayList<EnemyData> enemy1 = new ArrayList<EnemyData>();
     enemy1.add(new EnemyData(600, 240, "ookami", -1, 0, 12, 0));
     enemy1.add(new EnemyData(360, -50, "flymiira", -1, 0.5f, 7, 0));
-    enemy1.add(new EnemyData(370, -50, "flymiira", -1, 0.5f, 7, 0));
     stageEnemyData.put(1, enemy1);
   }
 
