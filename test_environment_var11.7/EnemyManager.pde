@@ -79,6 +79,11 @@ class EnemyManager {
   enemy1.add(new EnemyData( 2350, frkY,        "frankenstein", -1, 0.12f, 8, 2));
   enemy1.add(new EnemyData( 2500, groundY-36, "flymiira",      1, 0.8f,  4, 0));
   enemy1.add(new EnemyData( 2650, groundY-36, "ookami",        1, 0.6f,  5, 1));
+    enemy1.add(new EnemyData(
+    2500, frkY,
+    "frankenstein",
+    -1, 0.08f,
+    6, 2));
   
   enemy1.add(new EnemyData(2300, groundY-36, "ookami",       -1, 0.5f, 4, 1));
   enemy1.add(new EnemyData(2500, groundY-36, "ookami",        1, 0.5f, 4, 1));
@@ -89,7 +94,14 @@ class EnemyManager {
   enemy1.add(new EnemyData(2900, groundY-36, "flymiira",      1, 0.7f, 3, 0));
  float bossX = 3000;          // 出現させたいＸ座標
   float bossY = height - 200;  // 空中っぽくしたければ地上より高めに設定
-
+  enemy1.add(new EnemyData(
+    bossX, bossY,
+    "rasubosu",   // タイプ名（setupEnemies() で判別する文字列）
+    0,            // dir（不要なのでダミー）
+    2.5f,         // speed
+    50,           // hp
+    3             // armor
+  ));
 
 
   stageEnemyData.put(1, enemy1);
@@ -154,18 +166,7 @@ class EnemyManager {
         data.hp, data.armor
       ));
     }
- else if (data.type.equals("rasubosu")) {
-      Hitbox hb = new Hitbox(data.x, data.y, 120, 120);
-      add(new Rasubosu(
-        hb,
-        rasubosuImg,       // setup() で loadImage しておくこと
-        player,
-        collider, colHand,
-        data.speed,
-        data.hp,
-        data.armor
-      ));
-    }
+ 
   }
 }
 

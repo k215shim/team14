@@ -1,3 +1,4 @@
+import processing.sound.*;
 int tileSize = 22;
 int objTileSize = 22;
 int[] solidTiles = {1, 3, 4, 5, 6, 7, 8, 9,13,14};
@@ -62,6 +63,10 @@ PImage[] sleepyFramesRight = new PImage[2];
 
 PImage jumpImgLeft;
 PImage jumpImgRight;
+SoundFile bgmTitle;   // タイトル画面用BGM
+SoundFile bgmGame;    // ゲーム画面用BGM
+SoundFile sfxButton;  // ボタン押下効果音
+SoundFile bgmBoss;
 
 Enemy enemy;
 Ookami wolf;
@@ -164,6 +169,12 @@ void setup() {
   background(216, 151, 71);
   
   bgImg = loadImage("background.png");
+   // 音楽ファイルの読み込み。ファイル名は data/bgm.mp3 に合わせてください
+  bgmTitle = new SoundFile(this, "title.mp3"); 
+  bgmGame = new SoundFile(this, "bgm.mp3");
+  sfxButton  = new SoundFile(this, "button.mp3");
+  bgmBoss = new SoundFile(this, "bgmBoss.mp3");  
+  bgmTitle.loop();  // ループ再生を開始
 
   
   ookamiImgL = loadImage("ookami0.png");
@@ -271,7 +282,8 @@ void setup() {
     slopeleftImg,
     goalFlag
   );
-  
+ 
+   
   enemyManager = new EnemyManager(collisionChecker, collisionHandler, player);
   enemyManager.registerEnemy();
   enemyManager.setupEnemies(currentStage);
@@ -301,6 +313,7 @@ void setup() {
   );
   player.groundY = height - 156;
   player.colHand = collisionHandler;
+ 
   
   enemyManager.player = player;
 }
@@ -341,11 +354,34 @@ void setup() {
         else if (player.shieldCount == 4) image(hpGaugeFlame[4], 13, 15, 84, 35);
         else if (player.shieldCount >= 5) image(hpGaugeFlame[5], 13, 15, 84, 35);
       }
-      if (!bossSpawned && player.hitbox.getX() > 3500) {
-    // プレイヤーが x>1000 を超えたらボスをスポーン
+      else if (gameState == state_gameOver) {
 
+  bufferManager.drawAll(cameraOffsetX, cameraOffsetY);
+  fill(0, 0, 0, 150);
+  rect(0, 0, width, height);
+  displayGameOverScreen();
+  // ゲームBGMを止める
+  if (bgmGame.isPlaying()) bgmGame.stop();
+  // ボスBGMも止める
+  if (bgmBoss.isPlaying()) bgmBoss.stop();
+}
+else if (gameState == state_gameClear) {
+  if (bgmBoss.isPlaying())  bgmBoss.stop();
+  bufferManager.drawAll(cameraOffsetX, cameraOffsetY);
+  fill(0, 0, 0, 150);
+  rect(0, 0, width, height);
+  displayGameClearScreen();
+  // ボスBGMを止める
+  if (bgmBoss.isPlaying()) bgmBoss.stop();
+}
+
+      if (!bossSpawned && player.hitbox.getX() > 3500) {
+        
+      if (bgmGame.isPlaying()) bgmGame.stop();
+      if (!bgmBoss.isPlaying()) bgmBoss.loop();
+    // プレイヤーが x>1000 を超えたらボスをスポーン
     float spawnX = player.hitbox.getX() + 600;               // プレイヤーの少し前
-    float spawnY = height - 200;                            // 地面より少し上
+    float spawnY = height - 300;                            // 地面より少し上
     Hitbox bossBox = new Hitbox(spawnX, spawnY, 120, 120);
     Rasubosu boss = new Rasubosu(
       bossBox,
@@ -362,8 +398,6 @@ void setup() {
   }
       
       enemyManager.update();
-
-
       enemyManager.display(cameraOffsetX);
       pushMatrix();
       translate(-cameraOffsetX, cameraOffsetY);
@@ -452,6 +486,9 @@ void setup() {
       fill(0, 0, 0, 150); 
       rect(0, 0, width, height);
       displayGameOverScreen();
+        if (bgmGame.isPlaying()) {
+        bgmGame.stop();
+  }
     }
     else if (gameState == state_gameClear) {
   bufferManager.drawAll(cameraOffsetX, cameraOffsetY);
@@ -578,35 +615,49 @@ void displayGameClearScreen() {
 }
 
  void restartGame(boolean isRetry) {
-bossSpawned = false;
-   
+    if (bgmBoss.isPlaying()) bgmBoss.stop();
+ 
    player.hasFirePower = false;
      player.resetPosition();
-     
-      gameCleared = false;
-     
-    if (isRetry) {  
-      gameState = state_play;
-
-    // その他リセット（敵・エフェクト・チャージ状態など）
+     bossSpawned = false;
+     gameCleared = false;
       fireballs.clear();
       fireArrows.clear();
       infernos.clear();
       inpacts.clear();
       enemyManager.setupEnemies(currentStage);
       itemManager.reset();
+      
+    if (isRetry) {
+    // タイトルBGMを停止してからゲームBGMを再生
+    if (bgmTitle.isPlaying()) {
+      bgmTitle.stop();
     }
-    else {
-      gameState = state_start;
-      player.manaCount = 0;
-      player.shieldCount = 0;
-      itemManager.reset();
+    if (!bgmGame.isPlaying()) {
+      bgmGame.loop();
     }
-}
+    gameState = state_play;
+  } 
+  else {
+    // タイトルに戻るとき
+    if (bgmGame.isPlaying()) {
+      bgmGame.stop();
+    }
+    if (!bgmTitle.isPlaying()) {
+      bgmTitle.loop();
+    }
+    player.manaCount   = 0;
+    player.shieldCount = 0;
+    gameState = state_start;
+  }
+} 
   
   
   void mousePressed() {
     if (gameState == state_start) {
+      bgmTitle.stop();
+      bgmGame.loop();
+
       gameState = state_play;
       enemyManager.setupEnemies(currentStage);
        println(gameState);
@@ -696,11 +747,4 @@ void keyReleased() {
       animationFrame = 0;
       aKeyHandled = false;
   }
-}
-
-boolean aabbHit(Hitbox h1, Hitbox h2) {
-  return h1.getX() < h2.getX() + h2.getW()
-      && h1.getX() + h1.getW() > h2.getX()
-      && h1.getY() < h2.getY() + h2.getH()
-      && h1.getY() + h1.getH() > h2.getY();
 }

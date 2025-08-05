@@ -37,8 +37,8 @@ class Rasubosu extends Enemy {
       hp, armor
     );
     this.rasubosuImg = rasubosuImg;
-    this.drawW = 200;
-    this.drawH = 200;
+    this.drawW = 240;
+    this.drawH = 240;
     this.animationSpeed = 6;
   }
 
